@@ -1,0 +1,283 @@
+import { prisma } from "@/lib/db";
+
+import { withAuth, apiResponse, apiError } from "@/lib/api-utils";
+import { profileUpdateSchema } from "@/lib/validations";
+import { invalidateUserCache } from "@/lib/authorization";
+
+export const PATCH = withAuth(async (req, { decoded, body }) => {
+  try {
+    const userId = decoded.userId;
+
+    if (!body) {
+      return apiError("Missing request body", 400);
+    }
+
+    const parsed = profileUpdateSchema.safeParse(body);
+    if (!parsed.success) {
+      const fieldErrors = parsed.error.flatten().fieldErrors;
+      return apiError("Validation failed: " + JSON.stringify(fieldErrors), 400);
+    }
+
+    const { 
+      name, 
+      bio, 
+      image, 
+      phoneNumber, 
+      location, 
+      githubUrl, 
+      linkedinUrl, 
+      skills 
+    } = parsed.data;
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name,
+        bio,
+        image,
+        phoneNumber,
+        location,
+        githubUrl,
+        linkedinUrl,
+        skills: Array.isArray(skills) ? skills : undefined,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        bio: true,
+        image: true,
+        phoneNumber: true,
+        location: true,
+        githubUrl: true,
+        linkedinUrl: true,
+        skills: true,
+      }
+    });
+
+    if (userId) {
+      await invalidateUserCache(userId);
+    }
+
+    return apiResponse("Profile updated successfully", { user: updatedUser });
+  } catch (error) {
+    console.error("Profile update error:", error);
+    return apiError("Failed to update profile", 500);
+  }
+});
+
+export const GET = withAuth(async (req, { decoded }) => {
+  try {
+    const userId = decoded.userId;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        bio: true,
+        image: true,
+        phoneNumber: true,
+        location: true,
+        githubUrl: true,
+        linkedinUrl: true,
+        skills: true,
+        orgId: true,
+        projectId: true,
+        organization: {
+          select: { id: true, name: true, plan: true }
+        },
+        project: {
+          select: { id: true, name: true, description: true, plan: true }
+        },
+        teamId: true,
+        team: {
+          select: { id: true, name: true, projectId: true }
+        }
+      }
+    });
+
+    if (!user) {
+      return apiError("User not found", 404);
+    }
+
+    // Calculate Stats based on Role
+    let resolvedCount = 0;
+    let breachedCount = 0;
+    let totalIssuesCount = 0;
+    const now = new Date();
+
+    if (user.role === "ADMIN") {
+      const targetOrgId = user.orgId;
+      if (!targetOrgId) return apiError("Organization is required", 403);
+
+      const [resolved, breached, total] = await Promise.all([
+        prisma.issue.count({
+          where: { project: { orgId: targetOrgId }, status: "RESOLVED" },
+        }),
+        prisma.issue.count({
+          where: { 
+            project: { orgId: targetOrgId },
+            OR: [
+              { responseBreached: true }, 
+              { resolutionBreached: true },
+              { responseSlaDeadline: { lt: now }, status: "OPEN" },
+              { resolutionSlaDeadline: { lt: now }, status: { not: "RESOLVED" } }
+            ] 
+          },
+        }),
+        prisma.issue.count({
+          where: { project: { orgId: targetOrgId } },
+        })
+      ]);
+      resolvedCount = resolved;
+      breachedCount = breached;
+      totalIssuesCount = total;
+    } else if (user.role === "MANAGER" && user.projectId) {
+      const [resolved, breached, total] = await Promise.all([
+        prisma.issue.count({
+          where: { projectId: user.projectId, status: "RESOLVED" },
+        }),
+        prisma.issue.count({
+          where: { 
+            projectId: user.projectId, 
+            OR: [
+              { responseBreached: true }, 
+              { resolutionBreached: true },
+              { responseSlaDeadline: { lt: now }, status: "OPEN" },
+              { resolutionSlaDeadline: { lt: now }, status: { not: "RESOLVED" } }
+            ] 
+          },
+        }),
+        prisma.issue.count({
+          where: { projectId: user.projectId },
+        })
+      ]);
+      resolvedCount = resolved;
+      breachedCount = breached;
+      totalIssuesCount = total;
+    } else {
+      // DEVELOPER or fallback (Personal context)
+      const [resolved, breached, total] = await Promise.all([
+        prisma.issue.count({
+          where: { assignedToId: userId, status: "RESOLVED" },
+        }),
+        prisma.issue.count({
+          where: { 
+            assignedToId: userId, 
+            OR: [
+              { responseBreached: true }, 
+              { resolutionBreached: true },
+              { responseSlaDeadline: { lt: now }, status: "OPEN" },
+              { resolutionSlaDeadline: { lt: now }, status: { not: "RESOLVED" } }
+            ] 
+          },
+        }),
+        prisma.issue.count({
+          where: { assignedToId: userId },
+        })
+      ]);
+      resolvedCount = resolved;
+      breachedCount = breached;
+      totalIssuesCount = total;
+    }
+
+    // Dynamic rating formula
+    let rating = "5.0";
+    if (totalIssuesCount > 0) {
+      if (user.role === "DEVELOPER") {
+        // Individual performance: -0.1 per breach, base 5.0
+        rating = Math.max(1.0, 5.0 - (breachedCount * 0.1)).toFixed(1);
+      } else {
+        // Org/Project performance: Percentage-based
+        const breachRate = breachedCount / totalIssuesCount;
+        rating = Math.max(1.0, 5.0 * (1.0 - breachRate)).toFixed(1);
+      }
+    } else if (user.role === "ADMIN" || user.role === "MANAGER") {
+        // For Admins/Managers with no issues, keep it at 5.0 but ensure it's calculated
+        rating = "5.0";
+    }
+
+
+
+    // Profile Completion
+    const profileFields = [
+
+      user.name,
+      user.bio,
+      user.image,
+      user.phoneNumber,
+      user.location,
+      user.githubUrl,
+      user.linkedinUrl,
+      (user.skills && user.skills.length > 0) ? 'skills' : null,
+    ];
+    const completedFields = profileFields.filter(field => !!field).length;
+    const profileCompletion = Math.round((completedFields / profileFields.length) * 100);
+
+    let roleContext: Record<string, unknown> = {};
+
+    if (user.role === "ADMIN") {
+      const orgId = user.orgId || user.organization?.id;
+      if (!orgId) return apiError("Organization is required", 403);
+      const [projectCount, teamCount, memberCount] = await Promise.all([
+        prisma.project.count({ where: { orgId } }),
+        prisma.team.count({ where: { project: { orgId } } }),
+        prisma.user.count({ where: { orgId } }),
+      ]);
+
+      roleContext = {
+        organizationName: user.organization?.name || "Organization",
+        plan: user.organization?.plan || null,
+        projectCount,
+        teamCount,
+        memberCount,
+      };
+    } else if (user.role === "MANAGER") {
+      const [teamCount, developerCount, openIncidentCount] = await Promise.all([
+        prisma.team.count({ where: { projectId: user.projectId || undefined } }),
+        prisma.user.count({ where: { team: { projectId: user.projectId || undefined }, role: "DEVELOPER" } }),
+        prisma.issue.count({ where: { projectId: user.projectId || undefined, status: { in: ["OPEN", "ASSIGNED", "IN_PROGRESS"] } } }),
+      ]);
+
+      roleContext = {
+        projectName: user.project?.name || "Assigned Project",
+        projectDescription: user.project?.description || "",
+        plan: user.project?.plan || null,
+        teamCount,
+        developerCount,
+        openIncidentCount,
+      };
+    } else {
+      const [teamMemberCount, inProgressCount, assignedOpenCount] = await Promise.all([
+        prisma.user.count({ where: { teamId: user.teamId || undefined, role: "DEVELOPER" } }),
+        prisma.issue.count({ where: { assignedToId: userId, status: "IN_PROGRESS" } }),
+        prisma.issue.count({ where: { assignedToId: userId, status: { in: ["OPEN", "ASSIGNED"] } } }),
+      ]);
+
+      roleContext = {
+        teamName: user.team?.name || "Assigned Team",
+        teamMemberCount,
+        inProgressCount,
+        assignedOpenCount,
+      };
+    }
+
+    return apiResponse("Profile fetched successfully", { 
+      user,
+      stats: {
+        resolvedCount,
+        rating,
+        profileCompletion
+      },
+      roleContext,
+    });
+
+  } catch (error) {
+    console.error("Profile fetch error:", error);
+    return apiError("Failed to fetch profile", 500);
+  }
+});
