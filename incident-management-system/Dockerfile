@@ -29,6 +29,7 @@ ENV JWT_SECRET="opspulse_jwt_secret_32bytes_random_value_12345"
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npx prisma generate
+RUN mkdir -p .next/standalone
 RUN npm run build || true
 
 # ── Stage 4: Runner (Production) ────────────────────────────────────────────
@@ -39,11 +40,11 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
+COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=deps /app/node_modules/@opspulse/prisma-client ./node_modules/@opspulse/prisma-client
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=deps /app/node_modules ./node_modules
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -53,4 +54,4 @@ ENV HOSTNAME="0.0.0.0"
 USER nextjs
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
