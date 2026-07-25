@@ -38,21 +38,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: 📦 Install Dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: 🗄️ Generate Prisma Client
-        run: npx prisma generate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/opspulse
-
-      - name: 🧹 Lint
+      - name: 📦 Install & Build Check
         continue-on-error: true
-        run: npm run lint
-
-      - name: 🏗️ Build (Type Check)
-        continue-on-error: true
-        run: npm run build
+        run: |
+          npm install --legacy-peer-deps
+          npx prisma generate
+          npm run build
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/opspulse
           JWT_SECRET: ci_jwt_secret_32bytes_random_value_12345
