@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { PlanType } from "@devnexus/prisma-client";
+import { PlanType } from "@opspulse/prisma-client";
 import crypto from "crypto";
 
 /**

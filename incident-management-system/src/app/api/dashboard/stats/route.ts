@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { Prisma } from "@devnexus/prisma-client";
+import { Prisma } from "@opspulse/prisma-client";
 import { withAuth, apiResponse, apiError } from "@/lib/api-utils";
 import { formatTimeAgo } from "@/lib/utils";
 import { redis } from "@/lib/redis";

@@ -52,7 +52,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             <div className="w-9 h-9 bg-white flex items-center justify-center rounded-xl transition-all group-hover:scale-110 shadow-[0_0_20px_rgba(255,255,255,0.15)]">
               <Command className="w-4 h-4 text-black" />
             </div>
-            <span className="font-bold tracking-tight text-lg">DevNexus</span>
+            <span className="font-bold tracking-tight text-lg">OpsPulse</span>
           </Link>
 
           {/* Back button */}

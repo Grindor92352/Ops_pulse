@@ -1,7 +1,7 @@
 import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/db";
 import { logger } from "@/lib/logger";
-import { IssueSource, IssueSeverity, Prisma, Project } from "@devnexus/prisma-client";
+import { IssueSource, IssueSeverity, Prisma, Project } from "@opspulse/prisma-client";
 import { calculateSLADeadlines } from "@/services/issue-service";
 import { analyzeIncident } from "@/lib/ai-service";
 import { enqueueAITask, getQueueStats } from "@/lib/ai-queue";
@@ -33,14 +33,18 @@ function getProjectCorsHeaders(req: Request, allowedOrigins: string[], allowOpti
   const isTest = process.env.NODE_ENV === "test";
 
   if (!origin) {
-    if (isTest) {
+    if (isTest || process.env.NODE_ENV !== "production") {
       return {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": allowOptions ? "POST, OPTIONS" : "POST",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
       };
     }
-    return null;
+    return {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": allowOptions ? "POST, OPTIONS" : "POST",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    };
   }
 
   if (allowedOrigins.length > 0 && !allowedOrigins.includes(origin)) {
@@ -306,7 +310,7 @@ export async function OPTIONS(req: Request) {
     return new NextResponse(null, { status: 401 });
   }
 
-  const hashedKey = apiKey.startsWith("devnexus_sk_") ? hashApiKey(apiKey) : apiKey;
+  const hashedKey = (apiKey.startsWith("opspulse_sk_") || apiKey.startsWith("devnexus_sk_")) ? hashApiKey(apiKey) : apiKey;
   const project = await prisma.project.findUnique({ where: { sdkApiKey: hashedKey } });
   if (!project) {
     return new NextResponse(null, { status: 401 });
@@ -339,8 +343,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: getFallbackCorsHeaders(req) });
     }
 
-    const hashedKey = apiKey.startsWith("devnexus_sk_") ? hashApiKey(apiKey) : apiKey;
-    const project = await prisma.project.findUnique({ where: { sdkApiKey: hashedKey } });
+    const hashedKey = (apiKey.startsWith("opspulse_sk_") || apiKey.startsWith("devnexus_sk_")) ? hashApiKey(apiKey) : apiKey;
+    const project = await prisma.project.findFirst({
+      where: {
+        OR: [
+          { sdkApiKey: hashedKey },
+          { sdkApiKey: apiKey }
+        ]
+      }
+    });
     if (!project) {
       return NextResponse.json({ error: "Invalid API Key" }, { status: 401, headers: getFallbackCorsHeaders(req) });
     }

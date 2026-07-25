@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { EnvironmentType, IssueStatus, IssueSeverity, PlanType, Prisma, IssuePriority } from "@devnexus/prisma-client";
+import { EnvironmentType, IssueStatus, IssueSeverity, PlanType, Prisma, IssuePriority } from "@opspulse/prisma-client";
 
 export async function createIssue(data: {
   title: string;

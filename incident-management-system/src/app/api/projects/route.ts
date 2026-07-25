@@ -1,6 +1,6 @@
 import { withAuth, apiResponse, apiError } from "@/lib/api-utils";
 import { createProject, deleteProject, getProjectsByOrg } from "@/services/project-service";
-import { PlanType } from "@devnexus/prisma-client";
+import { PlanType } from "@opspulse/prisma-client";
 import { logAuditEvent } from "@/lib/audit-logger";
 
 export const GET = withAuth(async (_req, { decoded }) => {

@@ -200,7 +200,7 @@ export default function LoginPage() {
         transition={{ delay: 0.5 }}
         className="text-center text-sm text-white/30 pt-6 border-t border-white/[0.05] font-medium"
       >
-        New to DevNexus?{" "}
+        New to OpsPulse?{" "}
         <Link
           href="/auth/register"
           className="text-white/80 hover:text-white font-bold transition-colors relative group"

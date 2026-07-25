@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import { withAuth, apiResponse, apiError } from "@/lib/api-utils";
 import { updateIssue, getIssueDetails } from "@/services/issue-service";
-import { IssueStatus } from "@devnexus/prisma-client";
+import { IssueStatus } from "@opspulse/prisma-client";
 import { updateIssueSchema } from "@/lib/validations";
 import { EVENTS, emitEvent } from "@/lib/events";
 import { createNotification } from "@/services/notification-service";

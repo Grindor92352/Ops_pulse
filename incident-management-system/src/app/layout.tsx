@@ -7,23 +7,23 @@ import { NetworkStatus } from "@/components/ui/NetworkStatus";
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | DevNexus',
-    default: 'DevNexus - Incident Management',
+    template: '%s | OpsPulse',
+    default: 'OpsPulse - AI Incident Management System',
   },
-  description: "Enterprise-grade incident tracking and resolution nexus. Pinpoint errors, utilize Gemini AI root-cause analysis, and enforce organizational SLA standards instantly.",
-  manifest: "/manifest.json",
-  authors: [{ name: "DevNexus Team" }],
+  description: 'OpsPulse — Modern AI-driven Incident Management System and SRE Engine.',
+  keywords: ['incident management', 'sre', 'ai root cause', 'devops', 'error tracking', 'opspulse'],
+  authors: [{ name: "OpsPulse Team" }],
   openGraph: {
-    title: 'DevNexus - Incident Management',
-    description: 'Enterprise-grade incident tracking and resolution nexus powered by Gemini AI.',
-    url: process.env.NEXT_PUBLIC_APP_URL || 'https://devnexus.io',
-    siteName: 'DevNexus',
+    title: 'OpsPulse - AI Incident Management',
+    description: 'Modern AI-driven Incident Management System and SRE Engine.',
+    url: process.env.NEXT_PUBLIC_APP_URL || 'https://opspulse.io',
+    siteName: 'OpsPulse',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DevNexus - Incident Management',
-    description: 'Enterprise-grade incident tracking and resolution nexus.',
+    title: 'OpsPulse - AI Incident Management',
+    description: 'Modern AI-driven Incident Management System and SRE Engine.',
   },
 };
 

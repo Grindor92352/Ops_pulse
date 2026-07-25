@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { IssueSeverity, IssueSource, EnvironmentType, IssuePriority } from "@devnexus/prisma-client";
+import { IssueSeverity, IssueSource, EnvironmentType, IssuePriority } from "@opspulse/prisma-client";
 import { aiAnalysisSchema } from "@/lib/validations";
 import { sanitizeJsonValue } from "@/lib/sanitize";
 import { logger } from "@/lib/logger";

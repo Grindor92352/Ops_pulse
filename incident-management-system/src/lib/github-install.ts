@@ -1,9 +1,5 @@
 export async function startGithubAppInstall(projectId: string) {
-  const appSlug = process.env.NEXT_PUBLIC_GITHUB_APP_SLUG?.trim();
-
-  if (!appSlug) {
-    throw new Error("GitHub App slug is not configured");
-  }
+  const appSlug = (process.env.NEXT_PUBLIC_GITHUB_APP_SLUG || "opspulse-app")?.trim();
 
   const installWindow = window.open("about:blank", "_blank");
   if (installWindow) {

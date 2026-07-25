@@ -328,14 +328,22 @@ export function ProfileClient() {
             </h3>
 
             <div className="mt-5 grid grid-cols-2 gap-3">
-              {roleStats.map((item) => (
-                <div key={item.label} className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-4">
-                  <span className="block text-2xl font-extrabold text-white">{item.value}</span>
-                  <span className="mt-1 block text-[10px] font-medium uppercase tracking-wider text-zinc-600">
-                    {item.label}
-                  </span>
-                </div>
-              ))}
+              {roleStats.map((item) => {
+                const isLongText = typeof item.value === "string" && item.value.length > 5;
+                return (
+                  <div key={item.label} className="flex min-h-[82px] flex-col justify-between rounded-xl border border-white/[0.04] bg-white/[0.02] p-4">
+                    <span className={cn(
+                      "block font-extrabold tracking-tight text-white truncate",
+                      isLongText ? "text-xs uppercase text-emerald-400" : "text-2xl"
+                    )}>
+                      {item.value}
+                    </span>
+                    <span className="mt-1 block text-[10px] font-medium uppercase tracking-wider text-zinc-600">
+                      {item.label}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
             <div className="mt-5 space-y-2">

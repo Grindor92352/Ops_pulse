@@ -58,6 +58,7 @@ export function StatCard({ title, value, icon: Icon, color, bgClass, index }: St
               strokeLinejoin="round"
               className={color}
               points={generateSparkline()}
+              suppressHydrationWarning
             />
           </svg>
         </div>

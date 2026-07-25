@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { IssueSeverity, EnvironmentType, Role, IssueStatus, IssuePriority } from "@devnexus/prisma-client";
+import { IssueSeverity, EnvironmentType, Role, IssueStatus, IssuePriority } from "@opspulse/prisma-client";
 
 // Auth Schemas
 export const loginSchema = z.object({

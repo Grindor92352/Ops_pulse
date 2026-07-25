@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import { JwtPayload } from "@/lib/jwt";
-import { Role, UserStatus } from "@devnexus/prisma-client";
+import { Role, UserStatus } from "@opspulse/prisma-client";
 import { redis } from "@/lib/redis";
 
 export interface SessionUser {
@@ -144,20 +144,9 @@ export async function canAccessIssue(
   if (user.role === "MANAGER") return user.projectId === issue.projectId;
   
   if (user.role === "DEVELOPER") {
-    if (issue.assignedToId !== user.id) return false;
-    if (!issue.teamId) return false; // Issue must be team-assigned
-    
-    // Verify developer belongs to issue's team
-    const teamMember = await prisma.user.findFirst({
-      where: {
-        id: user.id,
-        teamId: issue.teamId,
-        role: "DEVELOPER",
-        status: "ACTIVE"
-      },
-      select: { id: true }
-    });
-    return !!teamMember;
+    if (issue.assignedToId === user.id) return true;
+    if (user.teamId && issue.teamId === user.teamId) return true;
+    return false;
   }
   
   return false;

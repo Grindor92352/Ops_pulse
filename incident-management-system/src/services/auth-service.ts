@@ -1,4 +1,4 @@
-import { Prisma } from '@devnexus/prisma-client';
+import { Prisma } from '@opspulse/prisma-client';
 import { prisma } from '@/lib/db';
 import { hashPassword } from '@/lib/hash';
 import crypto from 'crypto';

@@ -85,7 +85,7 @@ export function Sidebar({ navItems, roleTitle }: SidebarProps) {
           <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
             <Command className="w-4 h-4 text-white" />
           </div>
-          <span className="font-bold text-lg tracking-tight">DevNexus</span>
+          <span className="font-bold text-lg tracking-tight">OpsPulse</span>
         </Link>
         <button 
           onClick={() => setIsMobileMenuOpen(true)}
@@ -107,7 +107,7 @@ export function Sidebar({ navItems, roleTitle }: SidebarProps) {
           >
             <div className="flex items-center justify-between p-6 border-b border-white/[0.06]">
               <div className="flex flex-col">
-                <span className="font-bold text-xl tracking-tight">DevNexus</span>
+                <span className="font-bold text-xl tracking-tight">OpsPulse</span>
                 <span className="text-[10px] font-medium text-zinc-500 mt-1">{roleTitle}</span>
               </div>
               <button 
@@ -191,7 +191,7 @@ export function Sidebar({ navItems, roleTitle }: SidebarProps) {
               <Command className="w-5 h-5 text-white" />
             </motion.div>
             <div className="flex flex-col">
-              <span className="font-bold text-lg tracking-tight">DevNexus</span>
+              <span className="font-bold text-lg tracking-tight">OpsPulse</span>
               <span className="text-[10px] font-medium text-zinc-500">{roleTitle}</span>
             </div>
           </Link>
