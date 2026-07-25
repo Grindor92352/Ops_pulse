@@ -30,6 +30,7 @@ public class OpsPulseClient {
         this.apiKey = apiKey;
         this.baseUrl = baseUrl != null ? baseUrl : "http://localhost:3000/api/ingest";
         this.httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
                 .connectTimeout(Duration.ofSeconds(5))
                 .build();
         this.objectMapper = new ObjectMapper();
