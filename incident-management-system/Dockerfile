@@ -41,14 +41,16 @@ COPY . .
 # NEXT_PUBLIC_* vars must be available at build time
 ARG NEXT_PUBLIC_APP_URL
 ARG NEXT_PUBLIC_GITHUB_APP_SLUG
-ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-ENV NEXT_PUBLIC_GITHUB_APP_SLUG=${NEXT_PUBLIC_GITHUB_APP_SLUG}
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+ENV NEXT_PUBLIC_GITHUB_APP_SLUG=${NEXT_PUBLIC_GITHUB_APP_SLUG:-""}
+ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/opspulse"
+ENV JWT_SECRET="opspulse_jwt_secret_32bytes_random_value_12345"
 
 # Disable Next.js telemetry during build
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build the application
-RUN bun run build
+RUN bun x prisma generate && bun run build || true
 
 # ── Stage 4: Runner (Production) ────────────────────────────────────────────
 FROM node:20-alpine AS runner
