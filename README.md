@@ -141,9 +141,45 @@ GMAIL_APP_PASSWORD="your_gmail_app_password"
 
 ---
 
-## 📦 Client SDK Integration (`@opspulse/sdk`)
+## 📦 Client SDK Integrations
 
-In any Node.js, React, or TypeScript project, install the SDK to start monitoring errors:
+OpsPulse provides native SDKs for both **Node.js / React** and **Java / Spring Boot** applications.
+
+### ☕ 1. Java & Spring Boot SDK (`opspulse-java-sdk`)
+
+Add `opspulse-java-sdk` to your Spring Boot project's `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.opspulse</groupId>
+    <artifactId>opspulse-java-sdk</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+Add configuration to your `application.yml`:
+
+```yaml
+opspulse:
+  sdk:
+    api-key: opspulse_sk_demo_key_12345
+    base-url: http://localhost:3000/api/ingest
+    enabled: true
+```
+
+*The SDK automatically registers `@ControllerAdvice` to intercept unhandled Spring Boot controller exceptions, send stack traces to OpsPulse, and trigger Gemini AI analysis!*
+
+#### Manual Exception Capture (Java):
+```java
+OpsPulseClient client = new OpsPulseClient("opspulse_sk_demo_key_12345", "http://localhost:3000/api/ingest");
+client.captureException(throwable, "CRITICAL", Map.of("component", "OrderService"));
+```
+
+---
+
+### 🌐 2. Node.js, React & TypeScript SDK (`@opspulse/sdk`)
+
+In any Node.js, React, or TypeScript project, install the SDK:
 
 ```bash
 npm install opspulse-sdk
