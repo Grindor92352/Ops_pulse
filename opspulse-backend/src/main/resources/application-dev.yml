@@ -4,7 +4,7 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:h2:mem:devnexus;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    url: jdbc:h2:mem:opspulse;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
     driverClassName: org.h2.Driver
     username: sa
     password: 
@@ -22,7 +22,7 @@ spring:
       ddl-auto: create-drop
     show-sql: false
 
-devnexus:
+opspulse:
   jwt:
     secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
     expiration-ms: 86400000

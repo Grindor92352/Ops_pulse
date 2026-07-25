@@ -15,6 +15,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, ""),
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
   // Connection pooling — reuse SMTP connections for better throughput
   pool: true,
   maxConnections: 3,
@@ -119,7 +122,7 @@ async function processEmailQueue() {
 
     try {
       await transporter.sendMail({
-        from: `DevNexus <${process.env.GMAIL_USER}>`,
+        from: `OpsPulse <${process.env.GMAIL_USER}>`,
         to: item.options.to,
         subject: item.options.subject,
         html: item.options.html,
@@ -171,7 +174,7 @@ export async function sendMail({ to, subject, html }: SendMailOptions) {
   }
 
   const mailOptions = {
-    from: `DevNexus <${gmailUser}>`,
+    from: `OpsPulse <${gmailUser}>`,
     to,
     subject,
     html,

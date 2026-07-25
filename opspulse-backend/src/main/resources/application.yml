@@ -5,14 +5,14 @@ server:
 
 spring:
   application:
-    name: devnexus-backend
+    name: opspulse-backend
   profiles:
     active: dev
 
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/devnexus}
-    username: ${POSTGRES_USER:devnexus}
-    password: ${POSTGRES_PASSWORD:devnexus_secret}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/opspulse}
+    username: ${POSTGRES_USER:opspulse}
+    password: ${POSTGRES_PASSWORD:opspulse_secret}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -42,12 +42,12 @@ spring:
           starttls:
             enable: true
 
-devnexus:
+opspulse:
   jwt:
     secret: ${JWT_SECRET:3cb623335e4503e4bdc2dcb376d373e4d83434af43a16b35013dc5bd5f258702}
     expiration-ms: 86400000 # 24 hours
   gemini:
-    api-key: ${GEMINI_API_KEY:}
+    api-key: ${GEMINI_API_KEY:your_gemini_api_key_here}
     model: gemini-2.0-flash
 
 springdoc:

@@ -1,6 +1,6 @@
 /**
- * DevNexus SDK
- * A lightweight client for reporting errors and incidents to DevNexus.
+ * OpsPulse SDK
+ * A lightweight client for reporting errors and incidents to OpsPulse.
  */
 
 export enum IssueSeverity {
@@ -10,7 +10,7 @@ export enum IssueSeverity {
   CRITICAL = "CRITICAL",
 }
 
-export interface DevNexusConfig {
+export interface OpsPulseConfig {
   apiKey: string;
   baseUrl?: string;
   autoCapture?: boolean;
@@ -21,6 +21,8 @@ export interface DevNexusConfig {
   /** Hook to modify or scrub data before it is sent. Return null to cancel. */
   beforeSend?: (payload: any) => any | null;
 }
+
+export type DevNexusConfig = OpsPulseConfig;
 
 export interface ReportContext {
   tags?: Record<string, string>;
@@ -37,12 +39,12 @@ export interface Breadcrumb {
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-const DEFAULT_BASE_URL   = "https://devnexus.vercel.app/api/ingest";
+const DEFAULT_BASE_URL   = "http://localhost:3000/api/ingest";
 const DEDUP_WINDOW_MS    = 60_000; // suppress identical errors within 1 min
 const DEDUP_MAX_SIZE     = 100;    // max fingerprints to keep in memory
 const MAX_BREADCRUMBS    = 20;
 const DEFAULT_FLUSH_INT  = 5000;
-const STORAGE_KEY        = "devnexus_offline_queue";
+const STORAGE_KEY        = "opspulse_offline_queue";
 const STORAGE_TTL_MS     = 24 * 60 * 60 * 1000; // 24 hours
 
 function isValidQueueEntry(entry: any): boolean {
@@ -420,12 +422,12 @@ class DevNexusClient {
 
 let instance: DevNexusClient | null = null;
 
-export const DevNexus = {
+export const OpsPulse = {
   get _instance() { return instance; },
 
-  init(config: DevNexusConfig): DevNexusClient {
+  init(config: OpsPulseConfig): DevNexusClient {
     if (instance) {
-      console.warn("[DevNexus] Already initialized.");
+      console.warn("[OpsPulse] Already initialized.");
       return instance;
     }
     instance = new DevNexusClient(config);
@@ -433,22 +435,22 @@ export const DevNexus = {
   },
 
   captureException(error: unknown, context?: ReportContext) {
-    if (!instance) throw new Error("[DevNexus] Not initialized.");
+    if (!instance) throw new Error("[OpsPulse] Not initialized.");
     return instance.captureException(error, context);
   },
 
   captureMessage(message: string, context?: ReportContext) {
-    if (!instance) throw new Error("[DevNexus] Not initialized.");
+    if (!instance) throw new Error("[OpsPulse] Not initialized.");
     return instance.captureMessage(message, context);
   },
 
   addBreadcrumb(crumb: Omit<Breadcrumb, "timestamp">) {
-    if (!instance) throw new Error("[DevNexus] Not initialized.");
+    if (!instance) throw new Error("[OpsPulse] Not initialized.");
     return instance.addBreadcrumb(crumb);
   },
 
   async flush() {
-    if (!instance) throw new Error("[DevNexus] Not initialized.");
+    if (!instance) throw new Error("[OpsPulse] Not initialized.");
     return instance.flush();
   },
 
@@ -460,4 +462,6 @@ export const DevNexus = {
   },
 };
 
-export default DevNexus;
+export const DevNexus = OpsPulse;
+export { DevNexusClient as OpsPulseClient };
+export default OpsPulse;

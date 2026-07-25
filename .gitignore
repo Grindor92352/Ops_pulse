@@ -49,4 +49,13 @@ test-results/
 # Docker
 docker-compose.override.yml
 
+# Java Maven Build Artifacts
+**/target/
+*.class
+*.jar
+*.war
+.mvn/
+.idea/
+*.iml
+
 

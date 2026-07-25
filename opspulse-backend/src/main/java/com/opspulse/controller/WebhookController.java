@@ -36,7 +36,7 @@ public class WebhookController {
 
     private static final Logger logger = LoggerFactory.getLogger(WebhookController.class);
 
-    @Value("${opspulse.github.webhook-secret:devnexus_github_secret_12345}")
+    @Value("${opspulse.github.webhook-secret:opspulse_github_secret_12345}")
     private String webhookSecret;
 
     private final ProjectRepository projectRepository;

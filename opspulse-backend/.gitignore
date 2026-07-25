@@ -1,0 +1,16 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!target/%.jar
+*.sts-analysis
+.bsl
+.factorypath
+.dbeaver-data-sources.xml
+.target
+.pom.xml.tag
+.launch
+.settings
+.classpath
+.project
+.idea
+*.bin
+*.class

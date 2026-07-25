@@ -1,7 +1,7 @@
 {
-  "name": "devnexus-sdk",
+  "name": "opspulse-sdk",
   "version": "2.1.1",
-  "description": "Official SDK for DevNexus Incident Management System",
+  "description": "Official SDK for OpsPulse Incident Management System",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -25,9 +25,9 @@
     "error-tracking",
     "incident-management",
     "sdk",
-    "devnexus"
+    "opspulse"
   ],
-  "author": "DevNexus Team",
+  "author": "OpsPulse Team",
   "license": "MIT",
   "devDependencies": {
     "@types/bun": "^1.3.13",

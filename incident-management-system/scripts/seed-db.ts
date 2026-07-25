@@ -100,8 +100,11 @@ async function main() {
 main()
   .catch((e) => {
     console.error('❌ Seeding failed:', e);
-    process.exit(1);
+    process.exitCode = 1;
   })
   .finally(async () => {
     await prisma.$disconnect();
+    if (typeof process.exitCode === 'number' && process.exitCode !== 0) {
+      process.exit(process.exitCode);
+    }
   });
