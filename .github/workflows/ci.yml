@@ -18,7 +18,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/devnexus-app
+  IMAGE_NAME: ${{ github.repository_owner }}/opspulse-app
 
 jobs:
   # ── Job 1: Lint & Type Check ─────────────────────────────────────────────
@@ -44,7 +44,7 @@ jobs:
       - name: 🗄️ Generate Prisma Client
         run: bunx prisma generate
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/devnexus
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/opspulse
 
       - name: 🧹 Lint
         run: bun run lint
@@ -52,7 +52,7 @@ jobs:
       - name: 🏗️ Build (Type Check)
         run: bun run build
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/devnexus
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/opspulse
           NEXT_PUBLIC_APP_URL: http://localhost:3000
 
   # ── Job 2: SDK Build & Test ──────────────────────────────────────────────
@@ -121,7 +121,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL || 'https://devnexus.yourdomain.com' }}
+            NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL || 'https://opspulse.yourdomain.com' }}
             NEXT_PUBLIC_GITHUB_APP_SLUG=${{ vars.NEXT_PUBLIC_GITHUB_APP_SLUG || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
