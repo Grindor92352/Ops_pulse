@@ -101,9 +101,9 @@ export const POST = withAuth(async (_request, { decoded, body }) => {
     try {
       const mailResult = await sendMail({
         to: email,
-        subject: `You're invited to join DevNexus as a ${safeRole}`,
+        subject: `You're invited to join OpsPulse as a ${safeRole}`,
         html: `
-          <h2>You are invited to join DevNexus</h2>
+          <h2>You are invited to join OpsPulse</h2>
           <p>You have been invited as a <strong>${safeRole}</strong>.</p>
           <p>Click the link below to accept your invitation and set up your account:</p>
           <a href="${safeInviteLink}">${safeInviteLink}</a>

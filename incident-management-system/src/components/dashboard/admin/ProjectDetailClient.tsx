@@ -81,7 +81,7 @@ export function ProjectDetailClient({ project: initialProject }: { project: Deta
         window.location.reload();
       }
     };
-    const channel = new BroadcastChannel("devnexus-github");
+    const channel = new BroadcastChannel("opspulse-github");
     const handleBroadcast = (event: MessageEvent) => {
       if (
         event.data?.type === "GITHUB_LINKED" &&
@@ -626,10 +626,10 @@ export function ProjectDetailClient({ project: initialProject }: { project: Deta
                   <p className="text-[10px] text-zinc-600 font-medium">1. Install</p>
                   <div className="relative">
                     <div className="p-3 bg-black/40 border border-white/[0.04] rounded-lg font-mono text-xs text-zinc-400">
-                      npm install @devnexus/sdk
+                      npm install @opspulse/sdk
                     </div>
                     <button
-                      onClick={() => { navigator.clipboard.writeText('npm install @devnexus/sdk'); setNpmCopied(true); setTimeout(() => setNpmCopied(false), 2000); }}
+                      onClick={() => { navigator.clipboard.writeText('npm install @opspulse/sdk'); setNpmCopied(true); setTimeout(() => setNpmCopied(false), 2000); }}
                       className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-zinc-600 hover:text-white transition-colors"
                     >
                       {npmCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -641,9 +641,9 @@ export function ProjectDetailClient({ project: initialProject }: { project: Deta
                 <div className="space-y-2">
                   <p className="text-[10px] text-zinc-600 font-medium">2. Initialize</p>
                   <div className="p-3 bg-black/40 border border-white/[0.04] rounded-lg font-mono text-[11px] text-zinc-400 overflow-x-auto whitespace-pre">
-{`import { DevNexus } from '@devnexus/sdk';
+{`import { OpsPulse } from '@opspulse/sdk';
 
-DevNexus.init({
+OpsPulse.init({
   apiKey: '${project.sdkApiKey || "YOUR_SDK_API_KEY"}',
   baseUrl: '${origin || "<YOUR_APP_URL>"}/api/ingest'
 });`}

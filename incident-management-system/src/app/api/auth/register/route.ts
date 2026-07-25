@@ -27,11 +27,11 @@ export async function POST(request: Request) {
 
       const mailResult = await sendMail({
         to: email,
-        subject: "Verify your DevNexus Account",
+        subject: "Verify your OpsPulse Account",
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0a0a0c; border: 1px solid rgba(255, 255, 255, 0.08); padding: 48px; border-radius: 16px; color: #ffffff; text-align: center;">
             <h1 style="font-weight: 800; font-size: 32px; margin-bottom: 16px; letter-spacing: -0.025em; color: #ffffff;">Verify Your Account</h1>
-            <p style="font-size: 15px; line-height: 1.6; margin-bottom: 32px; color: #a1a1aa;">Welcome to DevNexus. Please confirm your email to activate your command console and join your organization.</p>
+            <p style="font-size: 15px; line-height: 1.6; margin-bottom: 32px; color: #a1a1aa;">Welcome to OpsPulse. Please confirm your email to activate your command console and join your organization.</p>
             <a href="${verifyUrl}" style="display: inline-block; background-color: #ffffff; color: #000000; padding: 14px 32px; text-decoration: none; font-weight: 600; font-size: 14px; border-radius: 8px; transition: background-color 0.2s ease;">
               Activate Account
             </a>

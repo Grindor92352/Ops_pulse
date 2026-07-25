@@ -59,7 +59,7 @@ export const POST = withAuth(async (_req, { decoded, body }) => {
   try {
     await sendMail({
       to: email,
-      subject: "You're invited to DevNexus",
+      subject: "You're invited to OpsPulse",
       html: `
         <h2>You are invited as a Manager</h2>
         <p>Click below to join:</p>

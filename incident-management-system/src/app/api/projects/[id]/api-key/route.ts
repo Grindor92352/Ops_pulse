@@ -45,7 +45,7 @@ export const POST = withAuth(async (req, { decoded, body, params }) => {
     return apiError("Project not found", 404);
   }
 
-  const plainTextKey = `devnexus_sk_${crypto.randomUUID().replace(/-/g, "")}`;
+  const plainTextKey = `opspulse_sk_${crypto.randomUUID().replace(/-/g, "")}`;
   const hashedKey = hashApiKey(plainTextKey);
 
   await prisma.project.update({

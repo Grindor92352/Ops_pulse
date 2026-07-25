@@ -28,7 +28,7 @@ export function NetworkStatus() {
         >
           <WifiOff className="h-4 w-4 animate-pulse text-red-400" />
           <span className="text-xs font-semibold text-red-200">
-            You are offline. DevNexus connection lost.
+            You are offline. OpsPulse connection lost.
           </span>
         </motion.div>
       )}

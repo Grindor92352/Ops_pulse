@@ -192,7 +192,7 @@ function InteractiveConsole() {
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
           <div>
             <h3 className="text-base font-bold flex items-center gap-2">
-              <BarChart2 className="w-4 h-4 text-zinc-400" /> DevNexus Active Telemetry
+              <BarChart2 className="w-4 h-4 text-zinc-400" /> OpsPulse Active Telemetry
             </h3>
             <p className="text-xs text-white/30">Monitoring live organization nodes</p>
           </div>
@@ -358,7 +358,7 @@ export default function LandingPage() {
                 <Command className="w-3.5 h-3.5 text-black" />
               </div>
               <span className="font-bold text-base tracking-tight">
-                DevNexus
+                OpsPulse
               </span>
             </Link>
             <div className="hidden md:flex items-center gap-6 text-sm text-white/60 font-medium">
@@ -399,7 +399,7 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-semibold text-white/80 mb-8 shadow-xl"
             >
-              <Activity className="w-3.5 h-3.5 text-cyan-400" /> DevNexus 2.0 is
+              <Activity className="w-3.5 h-3.5 text-cyan-400" /> OpsPulse 2.0 is
               now live
             </motion.div>
 
@@ -527,11 +527,11 @@ export default function LandingPage() {
                       <div>
                         <span className="text-white/30">import</span>
                         {" { "}
-                        <span className="text-white/80">DevNexus</span>
+                        <span className="text-white/80">OpsPulse</span>
                         {" } "}
                         <span className="text-white/30">from</span>{" "}
                         <span className="text-white/50">
-                          &apos;@devnexus/sdk&apos;
+                          &apos;@opspulse/sdk&apos;
                         </span>
                         <span className="text-white/20">;</span>
                       </div>
@@ -539,7 +539,7 @@ export default function LandingPage() {
                         {"// Initialize once"}
                       </div>
                       <div className="mt-1">
-                        <span className="text-white/80">DevNexus</span>
+                        <span className="text-white/80">OpsPulse</span>
                         <span className="text-white/20">.</span>
                         <span className="text-white/60">init</span>
                         <span className="text-white/20">({"{"}</span>
@@ -738,7 +738,7 @@ export default function LandingPage() {
                 <div className="w-7 h-7 bg-white rounded-md flex items-center justify-center">
                   <Command className="w-3.5 h-3.5 text-black" />
                 </div>
-                <span className="font-bold tracking-tight">DevNexus</span>
+                <span className="font-bold tracking-tight">OpsPulse</span>
               </Link>
               <p className="text-[11px] text-white/15 max-w-[200px] leading-relaxed">
                 Mission-critical incident infrastructure for modern engineering
@@ -790,7 +790,7 @@ export default function LandingPage() {
           </div>
           <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-[10px] text-white/10">
-              &copy; 2026 DevNexus. All rights reserved.
+              &copy; 2026 OpsPulse. All rights reserved.
             </p>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-pulse" />

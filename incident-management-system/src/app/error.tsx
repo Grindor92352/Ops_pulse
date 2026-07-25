@@ -14,8 +14,8 @@ export default function ErrorBoundary({
   useEffect(() => {
     console.error("Global Error Boundary caught:", error);
     
-    // Telemetry - Ingest our own crashes into DevNexus!
-    const sdkKey = process.env.NEXT_PUBLIC_DEVNEXUS_SDK_KEY;
+    // Telemetry - Ingest our own crashes into OpsPulse!
+    const sdkKey = process.env.NEXT_PUBLIC_OPSPULSE_SDK_KEY || process.env.NEXT_PUBLIC_DEVNEXUS_SDK_KEY;
     if (sdkKey) {
       fetch("/api/ingest", {
         method: "POST",
@@ -67,7 +67,7 @@ export default function ErrorBoundary({
           </Link>
         </div>
       </div>
-      <div className="mt-8 text-[10px] font-semibold uppercase tracking-widest text-zinc-600 z-10">DevNexus Incident Management</div>
+      <div className="mt-8 text-[10px] font-semibold uppercase tracking-widest text-zinc-600 z-10">OpsPulse Incident Management</div>
     </div>
   );
 }

@@ -27,7 +27,7 @@ export default function DocsPage() {
             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
               <Command className="w-4 h-4 text-black" />
             </div>
-            <span className="font-bold text-lg tracking-tight">DevNexus</span>
+            <span className="font-bold text-lg tracking-tight">OpsPulse</span>
           </Link>
           <Link
             href="/"
@@ -50,7 +50,7 @@ export default function DocsPage() {
                 Documentation
               </h1>
               <p className="text-lg text-zinc-400 max-w-2xl font-medium leading-relaxed">
-                Everything you need to integrate DevNexus into your stack.
+                Everything you need to integrate OpsPulse into your stack.
                 Explore the SDK, APIs, and best practices for resilient incident
                 tracking.
               </p>
@@ -88,7 +88,7 @@ export default function DocsPage() {
                 </div>
                 <div className="text-zinc-300">
                   npm install{" "}
-                  <span className="text-white font-bold">@devnexus/sdk</span>
+                  <span className="text-white font-bold">@opspulse/sdk</span>
                 </div>
               </div>
 
@@ -102,7 +102,7 @@ export default function DocsPage() {
                 </div>
                 <div className="text-zinc-300">
                   yarn add{" "}
-                  <span className="text-white font-bold">@devnexus/sdk</span>
+                  <span className="text-white font-bold">@opspulse/sdk</span>
                 </div>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function DocsPage() {
 
           <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:p-10 backdrop-blur-md shadow-2xl">
             <p className="text-zinc-400 text-base mb-6 font-medium">
-              Initialize DevNexus as early as possible in your
+              Initialize OpsPulse as early as possible in your
               application&apos;s lifecycle.
             </p>
 
@@ -139,20 +139,20 @@ export default function DocsPage() {
               </div>
               <div className="p-6 font-mono text-sm leading-relaxed overflow-x-auto whitespace-pre">
                 <span className="text-purple-400">import</span> {"{ "}{" "}
-                <span className="text-yellow-200">DevNexus</span> {" } "}{" "}
+                <span className="text-yellow-200">OpsPulse</span> {" } "}{" "}
                 <span className="text-purple-400">from</span>{" "}
                 <span className="text-green-400">
-                  &apos;@devnexus/sdk&apos;
+                  &apos;@opspulse/sdk&apos;
                 </span>
                 ;
                 <span className="text-zinc-500">
                   {"// Initialize with your project API key"}
                 </span>
-                <span className="text-yellow-200">DevNexus</span>.
+                <span className="text-yellow-200">OpsPulse</span>.
                 <span className="text-blue-400">init</span>({"{"}
                 <span className="text-zinc-300">apiKey</span>:{" "}
                 <span className="text-green-400">
-                  &apos;dn_live_xxxxxxxxxxxxxxxx&apos;
+                  &apos;opspulse_sk_xxxxxxxxxxxxxxxx&apos;
                 </span>
                 ,<span className="text-zinc-300">environment</span>:{" "}
                 <span className="text-green-400">&apos;production&apos;</span>,
@@ -164,14 +164,14 @@ export default function DocsPage() {
           </div>
         </section>
 
-        {/* USAGE */}
+        {/* CORE CONCEPTS */}
         <section className="space-y-8">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center shadow-lg">
-              <Code className="text-white w-6 h-6" />
+              <Code2 className="text-white w-6 h-6" />
             </div>
             <h2 className="text-3xl font-black tracking-tight">
-              3. Capturing Errors
+              3. Core SDK Features
             </h2>
           </div>
 
@@ -187,7 +187,7 @@ export default function DocsPage() {
                 <span className="text-blue-400">processPayment</span>();
                 {"} "} <span className="text-purple-400">catch</span> (error){" "}
                 {"{"}
-                <span className="text-yellow-200">DevNexus</span>.
+                <span className="text-yellow-200">OpsPulse</span>.
                 <span className="text-blue-400">captureException</span>(error,{" "}
                 {"{"}
                 tags: {"{ "} component:{" "}
@@ -208,7 +208,7 @@ export default function DocsPage() {
                 <span className="text-zinc-500">
                   {"// Set context on login"}
                 </span>
-                <span className="text-yellow-200">DevNexus</span>.
+                <span className="text-yellow-200">OpsPulse</span>.
                 <span className="text-blue-400">setUser</span>({"{"}
                 id: <span className="text-green-400">&apos;user_123&apos;</span>
                 , email:{" "}

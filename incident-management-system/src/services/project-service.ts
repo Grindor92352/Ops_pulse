@@ -22,7 +22,7 @@ export async function createProject(
   let hashedKey: string | null = null;
 
   if (projectPlan === "ADVANCED") {
-    plainTextKey = `devnexus_sk_${crypto.randomUUID().replace(/-/g, "")}`;
+    plainTextKey = `opspulse_sk_${crypto.randomUUID().replace(/-/g, "")}`;
     hashedKey = hashApiKey(plainTextKey);
   }
 

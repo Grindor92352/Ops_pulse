@@ -48,11 +48,11 @@ export function ProjectSdkKeyModal({ sdkKey, onConfirm }: ProjectSdkKeyModalProp
               Quick Start
             </div>
             <div className="text-sm font-mono text-zinc-400 bg-[#0a0a0c] p-4 rounded-lg border border-white/[0.04] overflow-x-auto whitespace-pre">
-{`npm install @devnexus/sdk
+{`npm install @opspulse/sdk
 
-import { DevNexus } from '@devnexus/sdk';
+import { OpsPulse } from '@opspulse/sdk';
 
-DevNexus.init({
+OpsPulse.init({
   apiKey: '${sdkKey}',
   baseUrl: 'https://your-app.com/api/ingest'
 });`}

@@ -78,12 +78,12 @@ export async function GET(req: NextRequest) {
       <body>
         <main>
           <h1>GitHub Connected</h1>
-          <p>The installation is now linked to your DevNexus project.</p>
+          <p>The installation is now linked to your OpsPulse project.</p>
           <button onclick="window.close()">Close Window</button>
         </main>
         <script>
           const targetOrigin = ${safeOrigin};
-          const channel = new BroadcastChannel("devnexus-github");
+          const channel = new BroadcastChannel("opspulse-github");
           channel.postMessage({ type: "GITHUB_LINKED", projectId: ${safeProjectId} });
           channel.close();
           if (window.opener) {

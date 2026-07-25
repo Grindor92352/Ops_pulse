@@ -1,5 +1,5 @@
 /**
- * Centralized sanitization utilities for DevNexus.
+ * Centralized sanitization utilities for OpsPulse.
  *
  * - sanitizeJsonValue: recursively strips HTML tags from all string leaves
  *   in a JSON-serializable value.  Used before persisting user-controlled
