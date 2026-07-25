@@ -9,7 +9,7 @@ import { logger } from "@/lib/logger";
 // Dashboard stats are cached in Redis for CACHE_TTL_SECONDS.
 // With 100 concurrent users hitting this endpoint, caching reduces
 // DB queries from 400/min (100 users × 4 queries × SWR refresh) to ~8/min.
-const CACHE_TTL_SECONDS = 30;
+const CACHE_TTL_SECONDS = 2;
 
 export const GET = withAuth(async (req, { decoded }) => {
   const { orgId } = decoded;
@@ -28,13 +28,10 @@ export const GET = withAuth(async (req, { decoded }) => {
     cacheKey = `dashboard:stats:${orgId}:developer:${decoded.userId}`;
     baseWhere.assignedToId = decoded.userId;
     recentIssuesWhere.assignedToId = decoded.userId;
-  } else {
-    recentIssuesWhere.assignedToId = null;
-    if (decoded.role === 'MANAGER' && decoded.projectId) {
-      cacheKey = `dashboard:stats:${orgId}:manager:${decoded.projectId}`;
-      baseWhere.projectId = decoded.projectId;
-      recentIssuesWhere.projectId = decoded.projectId;
-    }
+  } else if (decoded.role === 'MANAGER' && decoded.projectId) {
+    cacheKey = `dashboard:stats:${orgId}:manager:${decoded.projectId}`;
+    baseWhere.projectId = decoded.projectId;
+    recentIssuesWhere.projectId = decoded.projectId;
   }
 
   // ── Try cache first ────────────────────────────────────────────────────
@@ -73,7 +70,7 @@ export const GET = withAuth(async (req, { decoded }) => {
     }),
     prisma.issue.findMany({
       where: recentIssuesWhere,
-      take: 5,
+      take: 20,
       orderBy: { createdAt: 'desc' },
       include: { team: true, assignedTo: true, project: { select: { id: true, name: true } } }
     }),
