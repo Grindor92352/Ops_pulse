@@ -29,8 +29,8 @@ ENV JWT_SECRET="opspulse_jwt_secret_32bytes_random_value_12345"
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npx prisma generate
-RUN mkdir -p .next/standalone
 RUN npm run build || true
+RUN mkdir -p .next/standalone
 
 # ── Stage 4: Runner (Production) ────────────────────────────────────────────
 FROM node:20-alpine AS runner
@@ -44,6 +44,7 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=deps /app/node_modules ./node_modules
 
 ENV NODE_ENV=production

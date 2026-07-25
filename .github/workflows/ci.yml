@@ -112,12 +112,11 @@ jobs:
           context: ./incident-management-system
           file: ./incident-management-system/Dockerfile
           push: true
+          no-cache: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL || 'https://opspulse.yourdomain.com' }}
             NEXT_PUBLIC_GITHUB_APP_SLUG=${{ vars.NEXT_PUBLIC_GITHUB_APP_SLUG || '' }}
-          cache-from: type=gha,scope=opspulse-v2
-          cache-to: type=gha,mode=max,scope=opspulse-v2
 
 
