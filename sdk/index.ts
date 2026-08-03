@@ -39,7 +39,7 @@ export interface Breadcrumb {
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-const DEFAULT_BASE_URL   = "http://localhost:3000/api/ingest";
+const DEFAULT_BASE_URL   = "http://localhost:8080/api/ingest";
 const DEDUP_WINDOW_MS    = 60_000; // suppress identical errors within 1 min
 const DEDUP_MAX_SIZE     = 100;    // max fingerprints to keep in memory
 const MAX_BREADCRUMBS    = 20;

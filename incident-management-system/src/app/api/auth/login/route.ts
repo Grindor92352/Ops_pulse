@@ -10,6 +10,37 @@ export async function POST(request: Request) {
   const userAgent = request.headers.get("user-agent") || undefined;
   const ipAddress = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || undefined;
 
+  const springBootUrl = process.env.NEXT_PUBLIC_SPRING_BOOT_URL || "http://localhost:8080";
+  try {
+    const bodyText = await request.text();
+    const sbRes = await fetch(`${springBootUrl}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: bodyText
+    });
+
+    if (sbRes.ok) {
+      const sbData = await sbRes.json();
+      const response = NextResponse.json({
+        message: 'Login successful via Spring Boot',
+        user: sbData.data?.user || sbData.data
+      }, { status: 200 });
+
+      if (sbData.data?.token) {
+        response.cookies.set('incident_token', sbData.data.token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 60 * 60,
+          path: '/',
+        });
+      }
+      return response;
+    }
+  } catch (sbErr) {
+    console.warn("Spring Boot auth unreachable, using local fallback");
+  }
+
   try {
     const body = await request.json();
     const result = loginSchema.safeParse(body);

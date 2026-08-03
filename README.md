@@ -31,25 +31,23 @@
 
 ```text
 OpsPulse/
-├── incident-management-system/    # Next.js 16 App Router Frontend & Node API Services
-│   ├── src/
-│   │   ├── app/                    # Web pages, API endpoints, role dashboard routes
-│   │   ├── components/             # React Tailwind components (StatCards, Sidebars, Modals)
-│   │   ├── lib/                    # Gemini AI service, JWT auth, database client, mailer
-│   │   └── services/               # Issue, Project, Organization, and Notification services
-│   ├── prisma/                     # Schema & migrations (@opspulse/prisma-client)
-│   └── scripts/                    # Database seed scripts & test tools
-│
-├── opspulse-backend/               # Java 21 Spring Boot 3 Engine & REST Controllers
+├── opspulse-backend/               # ☕ Primary Java 21 Spring Boot 3 Engine & REST API Backend
 │   ├── src/main/java/com/opspulse/
-│   │   ├── controller/             # Auth, Issue, Project, Webhook, Health controllers
-│   │   ├── entity/                 # JPA database entities & Enums
-│   │   ├── repository/             # Spring Data JPA repositories
-│   │   └── service/                # SLA calculation rules, AI integration, Auth services
-│   └── src/main/resources/         # application.yml configuration
+│   │   ├── controller/             # Auth, Dashboard, Ingest, Issue, Project, Webhook controllers
+│   │   ├── entity/                 # Spring Data JPA database entities & Enums
+      ├── repository/             # JPA Repositories (PostgreSQL)
+│   │   └── service/                # SLA calculation rules, Gemini AI integration, Auth services
+│   └── src/main/resources/         # application.yml configuration & Swagger UI setup
 │
-└── sdk/                            # @opspulse/sdk Client Error Tracking Library
-    └── index.ts                    # Auto-capture, breadcrumbs, and offline queueing
+├── incident-management-system/    # 🌐 Next.js 16 App Router Presentation UI (Frontend Shell)
+│   ├── src/
+│   │   ├── app/                    # React UI pages, role dashboard routes, API proxies to Spring Boot
+│   │   ├── components/             # React Tailwind components (StatCards, Sidebars, Modals)
+│   │   └── lib/                    # API client utilities & Spring Boot request delegators
+│   └── prisma/                     # Schema & migrations (@opspulse/prisma-client)
+│
+└── sdk/                            # 📦 @opspulse/sdk Client Error Tracking Library
+    └── index.ts                    # Auto-capture targeting http://localhost:8080/api/ingest
 ```
 
 ---

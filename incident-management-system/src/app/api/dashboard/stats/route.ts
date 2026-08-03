@@ -47,7 +47,52 @@ export const GET = withAuth(async (req, { decoded }) => {
     }
   }
 
-  // ── Fetch from DB (parallelized) ───────────────────────────────────────
+  // ── Fetch from Spring Boot Backend (Primary) ───────────────────────────
+  const springBootUrl = process.env.NEXT_PUBLIC_SPRING_BOOT_URL || "http://localhost:8080";
+  try {
+    const sbRes = await fetch(`${springBootUrl}/api/dashboard/stats${decoded.projectId ? `?projectId=${decoded.projectId}` : ''}`, {
+      headers: { "Content-Type": "application/json" },
+      next: { revalidate: 2 }
+    });
+    if (sbRes.ok) {
+      const sbJson = await sbRes.json();
+      if (sbJson.data) {
+        const statsData = sbJson.data;
+        const recentIssues = (statsData.recentIssues || []).map((issue: any) => ({
+          id: issue.id,
+          title: issue.title,
+          rootCause: issue.rootCause || (issue.description ? issue.description.substring(0, 100) + '...' : "—"),
+          description: issue.description,
+          status: issue.status,
+          severity: issue.severity,
+          teamName: issue.teamName || "—",
+          assignedToEmail: issue.assignedToEmail || "—",
+          timeAgo: formatTimeAgo(new Date(issue.createdAt || Date.now())),
+          logs: issue.logs,
+          createdAt: issue.createdAt,
+          projectId: issue.projectId,
+          teamId: issue.teamId,
+          source: issue.source,
+          project: issue.projectName ? { id: issue.projectId, name: issue.projectName } : null
+        }));
+
+        const responseData = {
+          stats: {
+            openIssuesCount: statsData.openIssues || 0,
+            breachedCount: (statsData.responseSlaBreaches || 0) + (statsData.resolutionSlaBreaches || 0),
+            resolvedTodayCount: statsData.resolvedIssues || 0,
+          },
+          recentIssues
+        };
+
+        return apiResponse("Stats fetched successfully from Spring Boot", responseData);
+      }
+    }
+  } catch (sbErr) {
+    logger.error({ err: sbErr }, "Spring Boot API unreachable, falling back to local DB");
+  }
+
+  // ── Fallback: Fetch from DB (parallelized) ───────────────────────────────
   const [openIssuesCount, breachedCount, resolvedTodayCount, recentIssuesRaw] = await Promise.all([
     prisma.issue.count({ 
       where: { 

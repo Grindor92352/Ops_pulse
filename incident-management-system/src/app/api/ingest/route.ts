@@ -328,6 +328,27 @@ export async function OPTIONS(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const springBootUrl = process.env.NEXT_PUBLIC_SPRING_BOOT_URL || "http://localhost:8080";
+  try {
+    const rawBody = await req.text();
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader) headers["Authorization"] = authHeader;
+
+    const sbRes = await fetch(`${springBootUrl}/api/ingest`, {
+      method: "POST",
+      headers,
+      body: rawBody
+    });
+
+    if (sbRes.ok) {
+      const data = await sbRes.json();
+      return NextResponse.json(data, { status: sbRes.status });
+    }
+  } catch (err) {
+    logger.error({ err }, "Spring Boot ingest API unreachable, using local fallback");
+  }
+
   try {
     const contentLength = Number(req.headers.get("content-length") || 0);
     if (contentLength > MAX_PAYLOAD_BYTES) {

@@ -16,4 +16,17 @@ public interface IssueRepository extends JpaRepository<Issue, String> {
     List<Issue> findByProjectIdAndStatus(String projectId, IssueStatus status);
     List<Issue> findByProjectIdAndSeverity(String projectId, IssueSeverity severity);
     long countByProjectId(String projectId);
+
+    long countByStatus(IssueStatus status);
+    long countBySeverity(IssueSeverity severity);
+    long countByResponseBreachedTrue();
+    long countByResolutionBreachedTrue();
+    List<Issue> findTop10ByOrderByCreatedAtDesc();
+
+    long countByProjectIdAndStatus(String projectId, IssueStatus status);
+    long countByProjectIdAndSeverity(String projectId, IssueSeverity severity);
+    long countByProjectIdAndResponseBreachedTrue(String projectId);
+    long countByProjectIdAndResolutionBreachedTrue(String projectId);
+    List<Issue> findTop10ByProjectIdOrderByCreatedAtDesc(String projectId);
 }
+
